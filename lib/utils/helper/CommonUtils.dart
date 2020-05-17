@@ -32,7 +32,7 @@ class CommonUtils {
       borderRadius: 8,
       duration:  Duration(seconds: 2),
       backgroundGradient: LinearGradient(
-        colors: [MyColor.bgColorNindya, Colors.blueAccent],
+        colors: [Colors.blue, Colors.blueAccent],
         stops: [0.6, 1],
       ),
       boxShadows: [

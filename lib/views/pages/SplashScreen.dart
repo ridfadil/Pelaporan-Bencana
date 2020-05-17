@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pelaporan_apps/session/session.dart';
 import 'package:pelaporan_apps/utils/components/delayed_animation.dart';
 import 'package:pelaporan_apps/views/pages/login.dart';
@@ -77,7 +78,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                         "Aplikasi Pelaporan",
                         style: TextStyle(fontSize: 20.0, color: color),
                       ),Text(
-                        "Kecelakaan dan Bencana",
+                        "Kecelakaan",
                         style: TextStyle(fontSize: 20.0, color: color),
                       ),
                     ],
@@ -126,10 +127,11 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   Hero buildLogo() {
     return new Hero(
         tag: "Logo",
-        child: Container(
-            child: new Image.asset(
-              'assets/images/report.png',
-            )));
+        child: Icon(
+            FontAwesomeIcons.carCrash,
+          size: 50,
+          color: Colors.redAccent,
+        ));
   }
 
   Widget get _animatedButtonUI => InkWell(

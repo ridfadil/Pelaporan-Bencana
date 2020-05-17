@@ -18,4 +18,3 @@ class SharedPrefKeys {
   static const String STUDENT_ID = "STUDENT_ID";
   static const String FIREBASE_TOKEN = 'FIREBASE_TOKEN';
 }
-

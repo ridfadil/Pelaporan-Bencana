@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MyDialog {
   ///loading dialog
@@ -216,11 +217,7 @@ class BeautifulAlertDialog extends StatelessWidget {
           child: Row(
             children: <Widget>[
               SizedBox(width: 20.0),
-              CircleAvatar(radius: 55, backgroundColor: Colors.grey.shade200, child: Image.asset(
-                'assets/images/logo_smf.png',
-                width: 60.0,
-                height: 60.0,
-              )),
+              CircleAvatar(radius: 55, backgroundColor: Colors.grey.shade200, child: Icon(FontAwesomeIcons.carCrash,color: Colors.redAccent,)),
               SizedBox(width: 20.0),
               Expanded(
                 child: Column(
@@ -236,11 +233,11 @@ class BeautifulAlertDialog extends StatelessWidget {
                     Row(children: <Widget>[
                       Expanded(
                         child: RaisedButton(
-                          child: Text("Tidak",style: TextStyle(fontSize: 8),),
+                          child: Text("Tidak",style: TextStyle(fontSize: 7),),
                           color: Colors.green,
                           colorBrightness: Brightness.dark,
                           onPressed: (){Navigator.pop(context);},
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
                         ),
                       ),
                       SizedBox(width: 10.0),
@@ -250,20 +247,16 @@ class BeautifulAlertDialog extends StatelessWidget {
                           color: Colors.red,
                           colorBrightness: Brightness.dark,
                           onPressed: (){
-
                             if (type == "logout"){
                               //Session.clear();
                               Navigator.pushNamedAndRemoveUntil(context, "/login", (Route<dynamic> route) => false);
-                            }else if(type == "approve"){
-                              //detail_bulanan_bloc.postApproveLaporan(context, id);
-                              Navigator.pop(context);
                             }
                             else{
                               Navigator.pop(context);
                             }
                           },
 
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
                         ),
                       ),
                     ],)

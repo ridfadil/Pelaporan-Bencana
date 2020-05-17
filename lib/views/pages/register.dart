@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:pelaporan_apps/utils/components/custom_clipper.dart';
 import 'package:pelaporan_apps/utils/values/colors.dart';
 import 'package:pelaporan_apps/views/pages/dashboard.dart';
-import 'package:pelaporan_apps/views/pages/register.dart';
+import 'package:pelaporan_apps/views/pages/login.dart';
 
-class LoginUser extends StatefulWidget {
+class Register extends StatefulWidget {
   @override
-  _LoginUserState createState() => _LoginUserState();
+  _RegisterState createState() => _RegisterState();
 }
 
 
-class _LoginUserState extends State<LoginUser> {
+class _RegisterState extends State<Register> {
   final _email = new TextEditingController();
   final _password = new TextEditingController();
   bool isValidate;
@@ -112,7 +112,7 @@ class _LoginUserState extends State<LoginUser> {
                       ),
                       Center(
                         child: Text(
-                          "Pelaporan Kecelakaan",
+                          "Registrasi User",
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
@@ -131,7 +131,7 @@ class _LoginUserState extends State<LoginUser> {
             ],
           ),
           SizedBox(
-            height: 30,
+            height: 10,
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 32),
@@ -143,12 +143,12 @@ class _LoginUserState extends State<LoginUser> {
                 controller: _email,
                 cursorColor: Colors.lightBlue,
                 decoration: InputDecoration(
-                    hintText: "Email",
+                    hintText: "Nama",
                     prefixIcon: Material(
                       elevation: 0,
                       borderRadius: BorderRadius.all(Radius.circular(30)),
                       child: Icon(
-                        Icons.email,
+                        Icons.person,
                         color:  MyColor.badgeColor,
                       ),
                     ),
@@ -172,12 +172,69 @@ class _LoginUserState extends State<LoginUser> {
                 //onChanged: (String value){},
                 cursorColor: Colors.lightBlue,
                 decoration: InputDecoration(
-                    hintText: "Password",
+                    hintText: "No telp",
                     prefixIcon: Material(
                       elevation: 0,
                       borderRadius: BorderRadius.all(Radius.circular(30)),
                       child: Icon(
-                        Icons.lock,
+                        Icons.phone,
+                        color:  MyColor.badgeColor,
+                      ),
+                    ),
+                    border: InputBorder.none,
+                    contentPadding:
+                    EdgeInsets.symmetric(horizontal: 25, vertical: 13)),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 25,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 32),
+            child: Material(
+              elevation: 2.0,
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+              child: TextField(
+                controller: _password,
+                obscureText: true,
+                //onChanged: (String value){},
+                cursorColor: Colors.lightBlue,
+                decoration: InputDecoration(
+                    hintText: "Alamat",
+                    prefixIcon: Material(
+                      elevation: 0,
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      child: Icon(
+                        Icons.location_on,
+                        color:  MyColor.badgeColor,
+                      ),
+                    ),
+                    border: InputBorder.none,
+                    contentPadding:
+                    EdgeInsets.symmetric(horizontal: 25, vertical: 13)),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 25,
+          ),Padding(
+            padding: EdgeInsets.symmetric(horizontal: 32),
+            child: Material(
+              elevation: 2.0,
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+              child: TextField(
+                controller: _password,
+                obscureText: true,
+                //onChanged: (String value){},
+                cursorColor: Colors.lightBlue,
+                decoration: InputDecoration(
+                    hintText: "Email",
+                    prefixIcon: Material(
+                      elevation: 0,
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      child: Icon(
+                        Icons.email,
                         color:  MyColor.badgeColor,
                       ),
                     ),
@@ -198,14 +255,13 @@ class _LoginUserState extends State<LoginUser> {
                     color:  MyColor.badgeColor),
                 child: FlatButton(
                   child: Text(
-                    "Login",
+                    "Registrasi",
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
                         fontSize: 18),
                   ),
                   onPressed: () {
-                    Navigator.push(context,MaterialPageRoute(builder: (context) => Dashboard()));
                     /*setState(() {
                       isValidate = true;
                       if(_email.text.isNotEmpty && _password.text.isNotEmpty) {
@@ -220,9 +276,9 @@ class _LoginUserState extends State<LoginUser> {
           SizedBox(height: 20,),
           Center(
             child: InkWell(
-                child: Text("Registrasi", style: TextStyle(color: MyColor.badgeColor,fontSize: 12 ,fontWeight: FontWeight.w700),),
+              child: Text("Login", style: TextStyle(color: MyColor.badgeColor,fontSize: 12 ,fontWeight: FontWeight.w700),),
               onTap: (){
-                Navigator.push(context,MaterialPageRoute(builder: (context) => Register()));
+                Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => LoginUser()));
               },
             ),
           ),

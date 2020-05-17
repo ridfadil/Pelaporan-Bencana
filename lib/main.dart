@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pelaporan_apps/theme.dart';
 import 'package:pelaporan_apps/views/pages/SplashScreen.dart';
 import 'package:pelaporan_apps/views/pages/login.dart';
-import 'package:pelaporan_apps/views/pages/main_dashboard.dart';
+import 'package:pelaporan_apps/views/pages/dashboard.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       home: SplashScreen(),
       routes: {
         '/login': (context) => LoginUser(),
-        '/dashboard': (context) => MainDashboard(),
+        '/dashboard': (context) => Dashboard(),
       },
     );
   }
