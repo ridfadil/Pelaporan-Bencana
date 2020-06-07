@@ -1,5 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:pelaporan_apps/data/api_service.dart';
+import 'package:pelaporan_apps/session/constants.dart';
 import 'package:pelaporan_apps/utils/components/custom_clipper.dart';
+import 'package:pelaporan_apps/utils/helper/CommonUtils.dart';
+import 'package:pelaporan_apps/utils/helper/DialogUtils.dart';
 import 'package:pelaporan_apps/utils/values/colors.dart';
 import 'package:pelaporan_apps/views/pages/dashboard.dart';
 import 'package:pelaporan_apps/views/pages/login.dart';
@@ -11,30 +16,37 @@ class Register extends StatefulWidget {
 
 
 class _RegisterState extends State<Register> {
-  final _email = new TextEditingController();
-  final _password = new TextEditingController();
   bool isValidate;
+  TextEditingController nama = new TextEditingController();
+  TextEditingController noTelp = new TextEditingController();
+  TextEditingController alamat = new TextEditingController();
+  TextEditingController email = new TextEditingController();
+  TextEditingController password = new TextEditingController();
+  TextEditingController confirmPassword = new TextEditingController();
 
   @override
   void initState() {
     //SystemChrome.setEnabledSystemUIOverlays([]);
     isValidate = false;
-    _email.text = "";
-    _password.text = "";
     super.initState();
   }
 
   @override
   void dispose() {
-    _email.dispose();
-    _password.dispose();
+    password.dispose();
+    nama.dispose();
+    noTelp.dispose();
+    alamat.dispose();
+    email.dispose();
+    password.dispose();
+    confirmPassword.dispose();
     super.dispose();
   }
 
   Future _doLogin() async {
     /*MyDialog.loading(context,"sedang login...");
     Response response = await ApiService.login(
-        context: context, email: _email.text, password: _password.text);
+        context: context, email: _email.text, password: password.text);
     MyDialog.dismiss(context);
     return new Future.delayed(new Duration(milliseconds: 0), () {
       if (response.statusCode == APIResponseCode.SUCCESS) {
@@ -140,7 +152,7 @@ class _RegisterState extends State<Register> {
               borderRadius: BorderRadius.all(Radius.circular(30)),
               child: TextField(
                 //onChanged: (String value){},
-                controller: _email,
+                controller: nama,
                 cursorColor: Colors.lightBlue,
                 decoration: InputDecoration(
                     hintText: "Nama",
@@ -149,7 +161,7 @@ class _RegisterState extends State<Register> {
                       borderRadius: BorderRadius.all(Radius.circular(30)),
                       child: Icon(
                         Icons.person,
-                        color:  MyColor.badgeColor,
+                        color: MyColor.badgeColor,
                       ),
                     ),
                     border: InputBorder.none,
@@ -167,8 +179,8 @@ class _RegisterState extends State<Register> {
               elevation: 2.0,
               borderRadius: BorderRadius.all(Radius.circular(30)),
               child: TextField(
-                controller: _password,
-                obscureText: true,
+                controller: noTelp,
+                //obscureText: true,
                 //onChanged: (String value){},
                 cursorColor: Colors.lightBlue,
                 decoration: InputDecoration(
@@ -178,7 +190,7 @@ class _RegisterState extends State<Register> {
                       borderRadius: BorderRadius.all(Radius.circular(30)),
                       child: Icon(
                         Icons.phone,
-                        color:  MyColor.badgeColor,
+                        color: MyColor.badgeColor,
                       ),
                     ),
                     border: InputBorder.none,
@@ -196,8 +208,8 @@ class _RegisterState extends State<Register> {
               elevation: 2.0,
               borderRadius: BorderRadius.all(Radius.circular(30)),
               child: TextField(
-                controller: _password,
-                obscureText: true,
+                controller: alamat,
+                //obscureText: true,
                 //onChanged: (String value){},
                 cursorColor: Colors.lightBlue,
                 decoration: InputDecoration(
@@ -207,7 +219,7 @@ class _RegisterState extends State<Register> {
                       borderRadius: BorderRadius.all(Radius.circular(30)),
                       child: Icon(
                         Icons.location_on,
-                        color:  MyColor.badgeColor,
+                        color: MyColor.badgeColor,
                       ),
                     ),
                     border: InputBorder.none,
@@ -218,14 +230,14 @@ class _RegisterState extends State<Register> {
           ),
           SizedBox(
             height: 25,
-          ),Padding(
+          ), Padding(
             padding: EdgeInsets.symmetric(horizontal: 32),
             child: Material(
               elevation: 2.0,
               borderRadius: BorderRadius.all(Radius.circular(30)),
               child: TextField(
-                controller: _password,
-                obscureText: true,
+                controller: email,
+                //obscureText: true,
                 //onChanged: (String value){},
                 cursorColor: Colors.lightBlue,
                 decoration: InputDecoration(
@@ -235,7 +247,63 @@ class _RegisterState extends State<Register> {
                       borderRadius: BorderRadius.all(Radius.circular(30)),
                       child: Icon(
                         Icons.email,
-                        color:  MyColor.badgeColor,
+                        color: MyColor.badgeColor,
+                      ),
+                    ),
+                    border: InputBorder.none,
+                    contentPadding:
+                    EdgeInsets.symmetric(horizontal: 25, vertical: 13)),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 25,
+          ), Padding(
+            padding: EdgeInsets.symmetric(horizontal: 32),
+            child: Material(
+              elevation: 2.0,
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+              child: TextField(
+                controller: password,
+                obscureText: true,
+                //onChanged: (String value){},
+                cursorColor: Colors.lightBlue,
+                decoration: InputDecoration(
+                    hintText: "Password",
+                    prefixIcon: Material(
+                      elevation: 0,
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      child: Icon(
+                        Icons.lock_outline,
+                        color: MyColor.badgeColor,
+                      ),
+                    ),
+                    border: InputBorder.none,
+                    contentPadding:
+                    EdgeInsets.symmetric(horizontal: 25, vertical: 13)),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 25,
+          ), Padding(
+            padding: EdgeInsets.symmetric(horizontal: 32),
+            child: Material(
+              elevation: 2.0,
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+              child: TextField(
+                controller: confirmPassword,
+                obscureText: true,
+                //onChanged: (String value){},
+                cursorColor: Colors.lightBlue,
+                decoration: InputDecoration(
+                    hintText: "Konfirmasi Password",
+                    prefixIcon: Material(
+                      elevation: 0,
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      child: Icon(
+                        Icons.email,
+                        color: MyColor.badgeColor,
                       ),
                     ),
                     border: InputBorder.none,
@@ -252,7 +320,7 @@ class _RegisterState extends State<Register> {
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(100)),
-                    color:  MyColor.badgeColor),
+                    color: MyColor.badgeColor),
                 child: FlatButton(
                   child: Text(
                     "Registrasi",
@@ -262,11 +330,15 @@ class _RegisterState extends State<Register> {
                         fontSize: 18),
                   ),
                   onPressed: () {
+                    ApiService.checkConnection().then((con) {
+                      con ? _postDataRegister() : CommonUtils.showToast(
+                          "Anda Tidak memiliki Koneksi Internet!");
+                    });
                     /*setState(() {
                       isValidate = true;
-                      if(_email.text.isNotEmpty && _password.text.isNotEmpty) {
+                      if(_email.text.isNotEmpty && password.text.isNotEmpty) {
                         ApiService.checkConnection().then((con) {
-                          con? *//*_doLogin()*//* auth_bloc.postLogin(context) : CommonUtils.showFloatingFlushbar(context, "No Internet","Silakan aktifkan internet anda");
+                          con? */ /*_doLogin()*/ /* auth_bloc.postLogin(context) : CommonUtils.showFloatingFlushbar(context, "No Internet","Silakan aktifkan internet anda");
                         });
                       }
                     });*/
@@ -276,9 +348,12 @@ class _RegisterState extends State<Register> {
           SizedBox(height: 20,),
           Center(
             child: InkWell(
-              child: Text("Login", style: TextStyle(color: MyColor.badgeColor,fontSize: 12 ,fontWeight: FontWeight.w700),),
-              onTap: (){
-                Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => LoginUser()));
+              child: Text("Login", style: TextStyle(color: MyColor.badgeColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700),),
+              onTap: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => LoginUser()));
               },
             ),
           ),
@@ -293,8 +368,56 @@ class _RegisterState extends State<Register> {
         ],
       ),
     );
-
   }
+
+  _postDataRegister() async {
+    if (nama.text.isEmpty) {
+      CommonUtils.showToast("Nama Belum diisi");
+    } else if (noTelp.text.isEmpty) {
+      CommonUtils.showToast("No Telp Belum diisi");
+    } else if (email.text.isEmpty) {
+      CommonUtils.showToast("Email Belum diisi");
+    } else if (alamat.text.isEmpty) {
+      CommonUtils.showToast("Alamat Belum diisi");
+    } else if (password.text.isEmpty) {
+      CommonUtils.showToast("Password Belum diisi");
+    } else if (password.text.isEmpty) {
+      CommonUtils.showToast("Password Belum diisi");
+    } else if (confirmPassword.text.isEmpty) {
+      CommonUtils.showToast("Konfirmasi Password Belum diisi");
+    } else {
+      if (password.text.toString() == confirmPassword.text.toString()) {
+        MyDialog.loading(context, "Sedang Register");
+        Firestore.instance
+            .collection('user')
+            .where("email", isEqualTo: "${email.text.toString()}")
+            .snapshots()
+            .listen((data) {
+          if (data.documents.length > 0) {
+            //Navigator.push(context,MaterialPageRoute(builder: (context) => Dashboard()));
+            CommonUtils.showToast("Email Ini Sudah terfdaftar, silakan daftar dengan email yang lain");
+          } else {
+            Firestore.instance.collection('user').document().setData({
+              '${FirebaseKeys.FB_USER_NAMA}': '${nama.text.toString()}',
+              '${FirebaseKeys.FB_USER_ALAMAT}': '${alamat.text.toString()}',
+              '${FirebaseKeys.FB_USER_EMAIL}': '${email.text.toString()}',
+              '${FirebaseKeys.FB_USER_NO_TELP}': '${noTelp.text.toString()}',
+              '${FirebaseKeys.FB_USER_PASSWORD}': '${password.text.toString()}',
+              '${FirebaseKeys.FB_USER_ROLE}': '0',
+            });
+            CommonUtils.showToast("Berhasil Register, Silakan Login");
+          }
+        });
+
+        MyDialog.dismiss(context);
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => LoginUser()));
+      } else {
+        CommonUtils.showToast("Konfirmasi Password Tidak sesuai!");
+      }
+    }
+  }
+
   Hero buildLogo() {
     return new Hero(
         tag: "Logo",

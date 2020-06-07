@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pelaporan_apps/session/session.dart';
 
 class MyDialog {
   ///loading dialog
@@ -248,7 +249,7 @@ class BeautifulAlertDialog extends StatelessWidget {
                           colorBrightness: Brightness.dark,
                           onPressed: (){
                             if (type == "logout"){
-                              //Session.clear();
+                              Session.clear();
                               Navigator.pushNamedAndRemoveUntil(context, "/login", (Route<dynamic> route) => false);
                             }
                             else{

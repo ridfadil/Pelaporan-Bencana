@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pelaporan_apps/session/session.dart';
+import 'package:pelaporan_apps/utils/helper/CommonUtils.dart';
 import 'package:pelaporan_apps/utils/helper/DialogUtils.dart';
 import 'package:pelaporan_apps/utils/values/dimens.dart';
 import 'package:pelaporan_apps/views/pages/about.dart';
@@ -9,7 +11,34 @@ import 'package:pelaporan_apps/views/pages/user_profile.dart';
 
 import 'create_accident_report.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
+  @override
+  _DashboardState createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+
+  TextEditingController namaUser = new TextEditingController();
+  TextEditingController emailUser = new TextEditingController();
+
+  @override
+  void initState() {
+    getNama().then((namaValue) {
+      setState(() {
+        namaUser.text = namaValue;
+        //CommonUtils.showToast("NAMA : "+namaUser.text);
+      });
+    });
+
+    getEmail().then((emailValue) {
+      setState(() {
+        emailUser.text = emailValue;
+        //CommonUtils.showToast("EMAIL : "+emailUser.text);
+      });
+    });
+    super.initState();
+  }
+
   List<String> imageLinks = [
     'https://rush.house.gov/sites/rush.house.gov/files/featured_image/Ambulance-Diversion-is-Medical-Negligence-.jpeg',
     'https://awsimages.detik.net.id/community/media/visual/2020/04/09/65e1aaf3-e324-46ab-b13b-518de9783187.jpeg?w=700&q=80',
@@ -18,7 +47,8 @@ class Dashboard extends StatelessWidget {
 
   Size deviceSize;
 
-  Widget appBarColumn(BuildContext context) => SafeArea(
+  Widget appBarColumn(BuildContext context) =>
+      SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 18.0),
           child: new Column(
@@ -38,12 +68,10 @@ class Dashboard extends StatelessWidget {
                   ),
                   Column(
                     children: <Widget>[
-                      Text(
-                        "Dede Muktamar",
+                      Text(namaUser.text.toString(),
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
-                      Text(
-                        "Dede@email.com",
+                      Text(emailUser.text.toString(),
                         style: TextStyle(color: Colors.white, fontSize: 14),
                       ),
                     ],
@@ -64,7 +92,8 @@ class Dashboard extends StatelessWidget {
         ),
       );
 
-  Widget searchCard() => Padding(
+  Widget searchCard() =>
+      Padding(
         padding: const EdgeInsets.all(8.0),
         child: Card(
           elevation: 2.0,
@@ -90,7 +119,8 @@ class Dashboard extends StatelessWidget {
         ),
       );
 
-  Widget actionMenuCard(BuildContext context) => Card(
+  Widget actionMenuCard(BuildContext context) =>
+      Card(
         //elevation: 6,
         child: Container(
           color: Colors.white,
@@ -187,7 +217,8 @@ class Dashboard extends StatelessWidget {
                               ),
                             ),
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => LIstAccidentReport()));
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => LIstAccidentReport()));
                             },
                           ),
                         ),
@@ -201,42 +232,47 @@ class Dashboard extends StatelessWidget {
         ),
       );
 
-  Widget carousel() => Container(
+  Widget carousel() =>
+      Container(
         margin: EdgeInsets.only(top: 10),
         child: Center(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-              CarouselSlider(
-                height: 200.0,
-                items: imageLinks.map((imageLink) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.symmetric(horizontal: 5.0),
-                          child: Image.network(
-                            imageLink,
-                            fit: BoxFit.cover,
-                          ));
-                    },
-                  );
-                }).toList(),
-                reverse: false,
-                enableInfiniteScroll: true,
-                autoPlay: true,
-                initialPage: 0,
-                scrollDirection: Axis.horizontal,
-                pauseAutoPlayOnTouch: Duration(seconds: 5),
-                onPageChanged: (int pageNumber) {},
-                viewportFraction: 0.8,
-                enlargeCenterPage: true,
-                aspectRatio: 16 / 9,
-              )
-            ])),
+                  CarouselSlider(
+                    height: 200.0,
+                    items: imageLinks.map((imageLink) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Container(
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width,
+                              margin: EdgeInsets.symmetric(horizontal: 5.0),
+                              child: Image.network(
+                                imageLink,
+                                fit: BoxFit.cover,
+                              ));
+                        },
+                      );
+                    }).toList(),
+                    reverse: false,
+                    enableInfiniteScroll: true,
+                    autoPlay: true,
+                    initialPage: 0,
+                    scrollDirection: Axis.horizontal,
+                    pauseAutoPlayOnTouch: Duration(seconds: 5),
+                    onPageChanged: (int pageNumber) {},
+                    viewportFraction: 0.8,
+                    enlargeCenterPage: true,
+                    aspectRatio: 16 / 9,
+                  )
+                ])),
       );
 
-  Widget allCards(BuildContext context) => SingleChildScrollView(
+  Widget allCards(BuildContext context) =>
+      SingleChildScrollView(
         child: Column(
           children: <Widget>[
             appBarColumn(context),
@@ -316,9 +352,19 @@ class Dashboard extends StatelessWidget {
         });
   }
 
+  Future <String> getNama() async {
+    return await Session.getName();
+  }
+
+  Future <String> getEmail() async {
+    return await Session.getMail();
+  }
+
   @override
   Widget build(BuildContext context) {
-    deviceSize = MediaQuery.of(context).size;
+    deviceSize = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
       body: Stack(
         //fit: StackFit.expand,

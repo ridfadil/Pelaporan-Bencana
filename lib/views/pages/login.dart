@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:pelaporan_apps/session/constants.dart';
+import 'package:pelaporan_apps/session/session.dart';
 import 'package:pelaporan_apps/utils/components/custom_clipper.dart';
+import 'package:pelaporan_apps/utils/helper/CommonUtils.dart';
+import 'package:pelaporan_apps/utils/helper/DialogUtils.dart';
 import 'package:pelaporan_apps/utils/values/colors.dart';
 import 'package:pelaporan_apps/views/pages/dashboard.dart';
 import 'package:pelaporan_apps/views/pages/register.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginUser extends StatefulWidget {
   @override
@@ -11,30 +16,30 @@ class LoginUser extends StatefulWidget {
 
 
 class _LoginUserState extends State<LoginUser> {
-  final _email = new TextEditingController();
-  final _password = new TextEditingController();
+  final email = new TextEditingController();
+  final password = new TextEditingController();
   bool isValidate;
 
   @override
   void initState() {
     //SystemChrome.setEnabledSystemUIOverlays([]);
     isValidate = false;
-    _email.text = "";
-    _password.text = "";
+    email.text = "";
+    password.text = "";
     super.initState();
   }
 
   @override
   void dispose() {
-    _email.dispose();
-    _password.dispose();
+    email.dispose();
+    password.dispose();
     super.dispose();
   }
 
   Future _doLogin() async {
     /*MyDialog.loading(context,"sedang login...");
     Response response = await ApiService.login(
-        context: context, email: _email.text, password: _password.text);
+        context: context, email: email.text, password: password.text);
     MyDialog.dismiss(context);
     return new Future.delayed(new Duration(milliseconds: 0), () {
       if (response.statusCode == APIResponseCode.SUCCESS) {
@@ -140,7 +145,7 @@ class _LoginUserState extends State<LoginUser> {
               borderRadius: BorderRadius.all(Radius.circular(30)),
               child: TextField(
                 //onChanged: (String value){},
-                controller: _email,
+                controller: email,
                 cursorColor: Colors.lightBlue,
                 decoration: InputDecoration(
                     hintText: "Email",
@@ -167,7 +172,7 @@ class _LoginUserState extends State<LoginUser> {
               elevation: 2.0,
               borderRadius: BorderRadius.all(Radius.circular(30)),
               child: TextField(
-                controller: _password,
+                controller: password,
                 obscureText: true,
                 //onChanged: (String value){},
                 cursorColor: Colors.lightBlue,
@@ -205,10 +210,38 @@ class _LoginUserState extends State<LoginUser> {
                         fontSize: 18),
                   ),
                   onPressed: () {
-                    Navigator.push(context,MaterialPageRoute(builder: (context) => Dashboard()));
+                    if(password.text.isEmpty){
+                      CommonUtils.showToast("Password Belum diisi");
+                    }else if(email.text.isEmpty){
+                      CommonUtils.showToast("Email Belum diisi");
+                    } else{
+                      MyDialog.loading(context, "Sedang login");
+                      Firestore.instance
+                          .collection('user')
+                          .where("email", isEqualTo: "${email.text.toString()}")
+                          .where("password", isEqualTo: "${password.text.toString()}")
+                          .snapshots()
+                          .listen((data){
+                            if(data.documents.length > 0){
+                              _setSession(
+                                  data.documents[0].data['${FirebaseKeys.FB_USER_EMAIL}'],
+                                  data.documents[0].data['${FirebaseKeys.FB_USER_NAMA}'],
+                                  data.documents[0].data['${FirebaseKeys.FB_USER_ROLE}'],
+                                  data.documents[0].documentID,
+                              );
+                              CommonUtils.showToast("Selamat Datang ${data.documents[0].data['${FirebaseKeys.FB_USER_NAMA}']} :) ");
+                              //MyDialog.dismiss(context);
+                              Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => Dashboard()));
+                            }else{
+                              //MyDialog.dismiss(context);
+                              CommonUtils.showToast("Email dan Password tidak Valid!");
+                            }
+                      });
+                      MyDialog.dismiss(context);
+                    }
                     /*setState(() {
                       isValidate = true;
-                      if(_email.text.isNotEmpty && _password.text.isNotEmpty) {
+                      if(email.text.isNotEmpty && password.text.isNotEmpty) {
                         ApiService.checkConnection().then((con) {
                           con? *//*_doLogin()*//* auth_bloc.postLogin(context) : CommonUtils.showFloatingFlushbar(context, "No Internet","Silakan aktifkan internet anda");
                         });
@@ -239,6 +272,16 @@ class _LoginUserState extends State<LoginUser> {
     );
 
   }
+
+  void _setSession(String email,String nama, String role, String documentID) {
+    //CommonUtils.showToast(email +" - "+nama);
+    Session.setName(nama);
+    Session.setMail(email);
+    Session.setRole(role);
+    Session.setUserId(documentID);
+    Session.setLoggedIn(true);
+  }
+
   Hero buildLogo() {
     return new Hero(
         tag: "Logo",

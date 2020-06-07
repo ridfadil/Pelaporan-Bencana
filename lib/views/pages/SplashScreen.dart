@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pelaporan_apps/session/session.dart';
 import 'package:pelaporan_apps/utils/components/delayed_animation.dart';
+import 'package:pelaporan_apps/views/pages/dashboard.dart';
 import 'package:pelaporan_apps/views/pages/login.dart';
 
 import '../../utils/values/colors.dart';
@@ -20,6 +21,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   int count = 3;
   double _scale;
   AnimationController _controller;
+  bool isLogin = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -110,6 +113,12 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
   @override
   void initState() {
+    getLogin().then((onValue){
+      setState(() {
+        isLogin = onValue;
+      });
+    });
+
     _controller = AnimationController(
       vsync: this,
       duration: Duration(
@@ -121,6 +130,14 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       setState(() {});
     });
     super.initState();
+  }
+
+  Future <bool> getLogin() async {
+    if(await Session.isLoggedIn() !=null){
+      return Session.isLoggedIn();
+    }else{
+      return false;
+    }
   }
 
 
@@ -155,8 +172,6 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     ),
     onTap: () {
       navigationPage();
-      /*Navigator.of(context).pushReplacement(PageRouteBuilder(transitionDuration: Duration(seconds: 2),
-              pageBuilder: (_, __, ___) => Login()));*/
     },
   );
 
@@ -169,86 +184,15 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   }
 
   Future navigationPage() async {
-    //PermissionStatus permission, permission2;
-
-    /*if (Platform.isAndroid) {
-      var androidInfo = await DeviceInfoPlugin().androidInfo;
-      var release = androidInfo.version.release;
-      var sdkInt = androidInfo.version.sdkInt;
-      var manufacturer = androidInfo.manufacturer;
-      var model = androidInfo.model;
-      print('Android $release (SDK $sdkInt), $manufacturer $model');
-      // Android 9 (SDK 28), Xiaomi Redmi Note 7
+    if(isLogin){
+      Navigator.of(context).pushReplacement(PageRouteBuilder(
+          transitionDuration: Duration(seconds: 2),
+          pageBuilder: (_, __, ___) => Dashboard()));
+    }else{
+      Navigator.of(context).pushReplacement(PageRouteBuilder(
+          transitionDuration: Duration(seconds: 2),
+          pageBuilder: (_, __, ___) => LoginUser()));
     }
-
-    if (Platform.isIOS) {
-      var iosInfo = await DeviceInfoPlugin().iosInfo;
-      var systemName = iosInfo.systemName;
-      var version = iosInfo.systemVersion;
-      var name = iosInfo.name;
-      var model = iosInfo.model;
-      print('$systemName $version, $name $model');
-      // iOS 13.1, iPhone 11 Pro Max iPhone
-    }*/
-
-    /*bool isLoggedIn = await isSession();
-    if (isLoggedIn != null && isLoggedIn) {
-      setState(() {
-        Navigator.pushReplacementNamed(context, '/dashboard');
-      });
-    } else {
-      setState(() {
-        //Navigator.of(context).pushReplacement(_createRoute());
-        //Navigator.pushReplacementNamed(context, '/login');
-        Navigator.of(context).pushReplacement(PageRouteBuilder(
-            transitionDuration: Duration(seconds: 2),
-            pageBuilder: (_, __, ___) => *//*Login()*//* LoginUser()));
-      });
-    }*/
-
-    Navigator.of(context).pushReplacement(PageRouteBuilder(
-        transitionDuration: Duration(seconds: 2),
-        pageBuilder: (_, __, ___) => /*Login()*/ LoginUser()));
-
-    /*if (Platform.isIOS) {
-      ///permisi di ios
-      permission = PermissionStatus.granted;
-    } else {
-      ///permisi untuk android
-
-      Map<PermissionGroup, PermissionStatus> permissions =
-          await PermissionHandler().requestPermissions(
-              [PermissionGroup.storage, PermissionGroup.location]);
-      permission = await PermissionHandler()
-          .checkPermissionStatus(PermissionGroup.storage);
-      permission2 = await PermissionHandler()
-          .checkPermissionStatus(PermissionGroup.location);
-    }
-    print("PERMISSION" + permission.toString());
-    if (permission != PermissionStatus.granted ||
-        permission2 != PermissionStatus.granted) {
-      if (count <= 0) {
-        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-      }
-      _tryPermission();
-    } else {
-      bool isLoggedIn = await isSession();
-      if (this.mounted) {
-        if (isLoggedIn != null && isLoggedIn) {
-          setState(() {
-            Navigator.pushReplacementNamed(context, '/dashboard');
-          });
-        } else {
-          setState(() {
-            //Navigator.of(context).pushReplacement(_createRoute());
-            //Navigator.pushReplacementNamed(context, '/login');
-            Navigator.of(context).pushReplacement(PageRouteBuilder(
-                transitionDuration: Duration(seconds: 2),
-                pageBuilder: (_, __, ___) => *//*Login()*//* LoginUser()));
-          });
-        }
-      }
-    }*/
   }
 
   @override
