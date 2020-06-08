@@ -2,11 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:pelaporan_apps/views/pages/i_accident.dart';
 
 class LIstAccidentReport extends StatefulWidget {
+  String idDocumnet;
+  LIstAccidentReport({Key key, this.idDocumnet}) : super(key: key);
+
   @override
   _LIstAccidentReportState createState() => _LIstAccidentReportState();
 }
 
 class _LIstAccidentReportState extends State<LIstAccidentReport> {
+  String idDocument;
+  @override
+  void initState() {
+    idDocument = widget.idDocumnet;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +25,7 @@ class _LIstAccidentReportState extends State<LIstAccidentReport> {
       ),
       body: Stack(
         children: <Widget>[
-          Container(
+          /*Container(
             margin: EdgeInsets.only(top: 10,left: 10,right: 10),
             child: Row(
               children: <Widget>[
@@ -48,16 +57,16 @@ class _LIstAccidentReportState extends State<LIstAccidentReport> {
                   ),
                 ),
 
-                /*IconButton(
+                *//*IconButton(
                   icon: Icon(Icons.filter_list,color: Colors.redAccent,),
                   color: Colors.redAccent,
-                ),*/
+                ),*//*
               ],
             ),
-          ),
+          ),*/
           Container(
-              margin: EdgeInsets.only(top: 70),
-              child: ItemAccident()),
+              margin: EdgeInsets.only(top: 10),
+              child: ItemAccident(idDocument: idDocument)),
         ],
       ),
 

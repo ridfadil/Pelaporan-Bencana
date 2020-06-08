@@ -209,44 +209,53 @@ class _LoginUserState extends State<LoginUser> {
                         fontWeight: FontWeight.w700,
                         fontSize: 18),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if(password.text.isEmpty){
                       CommonUtils.showToast("Password Belum diisi");
                     }else if(email.text.isEmpty){
                       CommonUtils.showToast("Email Belum diisi");
                     } else{
                       MyDialog.loading(context, "Sedang login");
-                      Firestore.instance
+
+                      bool isThere = false;
+
+                      await Firestore.instance
                           .collection('user')
-                          .where("email", isEqualTo: "${email.text.toString()}")
-                          .where("password", isEqualTo: "${password.text.toString()}")
-                          .snapshots()
-                          .listen((data){
-                            if(data.documents.length > 0){
-                              _setSession(
-                                  data.documents[0].data['${FirebaseKeys.FB_USER_EMAIL}'],
-                                  data.documents[0].data['${FirebaseKeys.FB_USER_NAMA}'],
-                                  data.documents[0].data['${FirebaseKeys.FB_USER_ROLE}'],
-                                  data.documents[0].documentID,
-                              );
-                              CommonUtils.showToast("Selamat Datang ${data.documents[0].data['${FirebaseKeys.FB_USER_NAMA}']} :) ");
-                              //MyDialog.dismiss(context);
-                              Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => Dashboard()));
-                            }else{
-                              //MyDialog.dismiss(context);
-                              CommonUtils.showToast("Email dan Password tidak Valid!");
-                            }
+                          .getDocuments()
+                          .then((snapshot) {
+                        for(int i = 0 ; i< snapshot.documents.length;i++){
+                          if(snapshot.documents[i].data["${FirebaseKeys.FB_USER_EMAIL}"] == email.text.toString() && snapshot.documents[i].data["${FirebaseKeys.FB_USER_PASSWORD}"] == password.text.toString()){
+                            isThere = true;
+                          }
+                        }
                       });
+
+                      if(isThere){
+                        Firestore.instance
+                            .collection('user')
+                            .where("email", isEqualTo: "${email.text.toString()}")
+                            .where("password", isEqualTo: "${password.text.toString()}")
+                            .snapshots()
+                            .listen((data){
+                          if(data.documents.length > 0){
+                            _setSession(
+                              data.documents[0].data['${FirebaseKeys.FB_USER_EMAIL}'],
+                              data.documents[0].data['${FirebaseKeys.FB_USER_NAMA}'],
+                              data.documents[0].data['${FirebaseKeys.FB_USER_ROLE}'],
+                              data.documents[0].documentID,
+                            );
+                            CommonUtils.showToast("Selamat Datang ${data.documents[0].data['${FirebaseKeys.FB_USER_NAMA}']} :) ");
+                            //MyDialog.dismiss(context);
+                            Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => Dashboard()));
+                          }
+                        });
+                      } else{
+                        CommonUtils.showToast("Email dan Password tidak Valid!");
+                        isThere = false;
+                      }
+
                       MyDialog.dismiss(context);
                     }
-                    /*setState(() {
-                      isValidate = true;
-                      if(email.text.isNotEmpty && password.text.isNotEmpty) {
-                        ApiService.checkConnection().then((con) {
-                          con? *//*_doLogin()*//* auth_bloc.postLogin(context) : CommonUtils.showFloatingFlushbar(context, "No Internet","Silakan aktifkan internet anda");
-                        });
-                      }
-                    });*/
                   },
                 ),
               )),

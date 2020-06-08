@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pelaporan_apps/session/session.dart';
-import 'package:pelaporan_apps/utils/helper/CommonUtils.dart';
 import 'package:pelaporan_apps/utils/helper/DialogUtils.dart';
 import 'package:pelaporan_apps/utils/values/dimens.dart';
 import 'package:pelaporan_apps/views/pages/about.dart';
@@ -20,6 +19,7 @@ class _DashboardState extends State<Dashboard> {
 
   TextEditingController namaUser = new TextEditingController();
   TextEditingController emailUser = new TextEditingController();
+  String userId;
 
   @override
   void initState() {
@@ -33,6 +33,13 @@ class _DashboardState extends State<Dashboard> {
     getEmail().then((emailValue) {
       setState(() {
         emailUser.text = emailValue;
+        //CommonUtils.showToast("EMAIL : "+emailUser.text);
+      });
+    });
+
+    getUserId().then((userIdDoc) {
+      setState(() {
+        userId = userIdDoc;
         //CommonUtils.showToast("EMAIL : "+emailUser.text);
       });
     });
@@ -218,7 +225,7 @@ class _DashboardState extends State<Dashboard> {
                             ),
                             onTap: () {
                               Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => LIstAccidentReport()));
+                                  builder: (context) => LIstAccidentReport(idDocumnet: userId,)));
                             },
                           ),
                         ),
@@ -358,6 +365,9 @@ class _DashboardState extends State<Dashboard> {
 
   Future <String> getEmail() async {
     return await Session.getMail();
+  }
+  Future <String> getUserId() async {
+    return await Session.getUserId();
   }
 
   @override

@@ -180,6 +180,7 @@ class _RegisterState extends State<Register> {
               borderRadius: BorderRadius.all(Radius.circular(30)),
               child: TextField(
                 controller: noTelp,
+                keyboardType: TextInputType.number,
                 //obscureText: true,
                 //onChanged: (String value){},
                 cursorColor: Colors.lightBlue,
@@ -331,7 +332,7 @@ class _RegisterState extends State<Register> {
                   ),
                   onPressed: () {
                     ApiService.checkConnection().then((con) {
-                      con ? _postDataRegister() : CommonUtils.showToast(
+                      con ? _postDataRegister(context) : CommonUtils.showToast(
                           "Anda Tidak memiliki Koneksi Internet!");
                     });
                     /*setState(() {
@@ -370,13 +371,13 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  _postDataRegister() async {
+  _postDataRegister(BuildContext context) async {
     if (nama.text.isEmpty) {
       CommonUtils.showToast("Nama Belum diisi");
     } else if (noTelp.text.isEmpty) {
       CommonUtils.showToast("No Telp Belum diisi");
-    } else if (email.text.isEmpty) {
-      CommonUtils.showToast("Email Belum diisi");
+    } else if (email.text.isEmpty || !email.text.contains("@")|| !email.text.contains(".")) {
+      CommonUtils.showToast("Email Belum diisi / Format email tidak sesuai");
     } else if (alamat.text.isEmpty) {
       CommonUtils.showToast("Alamat Belum diisi");
     } else if (password.text.isEmpty) {
@@ -385,33 +386,54 @@ class _RegisterState extends State<Register> {
       CommonUtils.showToast("Password Belum diisi");
     } else if (confirmPassword.text.isEmpty) {
       CommonUtils.showToast("Konfirmasi Password Belum diisi");
-    } else {
+    } else  {
       if (password.text.toString() == confirmPassword.text.toString()) {
         MyDialog.loading(context, "Sedang Register");
-        Firestore.instance
+
+        bool isThere = false;
+
+        /*await Firestore.instance
             .collection('user')
-            .where("email", isEqualTo: "${email.text.toString()}")
+            //.where('${FirebaseKeys.FB_USER_EMAIL}', isEqualTo: email.text.toString())
             .snapshots()
             .listen((data) {
-          if (data.documents.length > 0) {
-            //Navigator.push(context,MaterialPageRoute(builder: (context) => Dashboard()));
-            CommonUtils.showToast("Email Ini Sudah terfdaftar, silakan daftar dengan email yang lain");
-          } else {
-            Firestore.instance.collection('user').document().setData({
-              '${FirebaseKeys.FB_USER_NAMA}': '${nama.text.toString()}',
-              '${FirebaseKeys.FB_USER_ALAMAT}': '${alamat.text.toString()}',
-              '${FirebaseKeys.FB_USER_EMAIL}': '${email.text.toString()}',
-              '${FirebaseKeys.FB_USER_NO_TELP}': '${noTelp.text.toString()}',
-              '${FirebaseKeys.FB_USER_PASSWORD}': '${password.text.toString()}',
-              '${FirebaseKeys.FB_USER_ROLE}': '0',
-            });
-            CommonUtils.showToast("Berhasil Register, Silakan Login");
+              for(int i = 0 ; i< data.documents.length;i++){
+                if(data.documents[i].data["${FirebaseKeys.FB_USER_EMAIL}"] == email.text.toString()){
+                  isThere = true;
+                  CommonUtils.showToast("$isThere");
+                }
+              }
+          });
+        */
+        await Firestore.instance
+            .collection('user')
+            .getDocuments()
+            .then((snapshot) {
+          for(int i = 0 ; i< snapshot.documents.length;i++){
+            if(snapshot.documents[i].data["${FirebaseKeys.FB_USER_EMAIL}"] == email.text.toString()){
+              isThere = true;
+              //CommonUtils.showToast("$isThere");
+            }
           }
         });
 
-        MyDialog.dismiss(context);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => LoginUser()));
+        if(!isThere){
+          await Firestore.instance.collection('user').document().setData({
+            '${FirebaseKeys.FB_USER_NAMA}': '${nama.text.toString()}',
+            '${FirebaseKeys.FB_USER_ALAMAT}': '${alamat.text.toString()}',
+            '${FirebaseKeys.FB_USER_EMAIL}': '${email.text.toString()}',
+            '${FirebaseKeys.FB_USER_NO_TELP}': '${noTelp.text.toString()}',
+            '${FirebaseKeys.FB_USER_PASSWORD}': '${password.text.toString()}',
+            '${FirebaseKeys.FB_USER_ROLE}': '0',
+          });
+          CommonUtils.showToast("Berhasil register");
+          MyDialog.dismiss(context);
+          Navigator.pop(context);
+        }else{
+          isThere = false;
+          CommonUtils.showToast("Email sudah terdaftar, silakan gunakan alamat email yang lain");
+          //MyDialog.dismiss(context);
+        }
       } else {
         CommonUtils.showToast("Konfirmasi Password Tidak sesuai!");
       }

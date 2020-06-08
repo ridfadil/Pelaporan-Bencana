@@ -26,4 +26,14 @@ class FirebaseKeys {
   static const String FB_USER_EMAIL = "email";
   static const String FB_USER_PASSWORD = "password";
   static const String FB_USER_ROLE = "role";
+
+
+  static const String FB_REPORT_ID_USER = "id_user_pelapor";
+  static const String FB_REPORT_DATE_KECELAKAAN = "date_kecelakaan";
+  static const String FB_REPORT_TIME_KECELAKAAN = "time_kecelakaan";
+  static const String FB_REPORT_JENIS_KECELAKAAN = "jenis_kecelakaan";
+  static const String FB_REPORT_LOKASI_KECELAKAAN = "lokasi_kecelakaan";
+  static const String FB_REPORT_URAIAN_KECELAKAAN = "uraian_kecelakaan";
+  static const String FB_REPORT_FILE_KECELAKAAN = "file_kecelakaan";
+
 }
