@@ -51,8 +51,8 @@ dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path_android: "assets/images/logo_pelaporan.jpg"
-  image_path_ios: "assets/images/logo_pelaporan.jpg"
+  image_path_android: "assets/images/logo_pelaporan.png"
+  image_path_ios: "assets/images/logo_pelaporan.png"
 
 dev_dependencies:
   flutter_test:
@@ -66,7 +66,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/report.png
-    - assets/images/logo_pelaporan.jpg
+    - assets/images/logo_pelaporan.png
 
   fonts:
     - family: Montserrat

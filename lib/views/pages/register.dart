@@ -444,8 +444,6 @@ class _RegisterState extends State<Register> {
     return new Hero(
         tag: "Logo",
         child: Container(
-            child: new Image.asset(
-              'assets/images/report.png',
-            )));
+            child: Image.asset("assets/images/logo_pelaporan.png"),));
   }
 }

@@ -109,15 +109,15 @@ class _DetailAccidentState extends State<DetailAccident> {
                   SizedBox(
                     height: 10,
                   ),
-                  buildTextField("Jenis",generaelModel.jenisKecelakaan,isDisable: false),
+                  buildTextField("Jenis Bencana",generaelModel.jenisKecelakaan,isDisable: false),
                   SizedBox(
                     height: 10,
                   ),
-                  buildTextField("Lokasi/Alamat kecelakaan",generaelModel.lokasiKecelakaan,isDisable: false),
+                  buildTextField("Lokasi/Alamat Bencana",generaelModel.lokasiKecelakaan,isDisable: false),
                   SizedBox(
                     height: 10,
                   ),
-                  buildTextField("Uraian Kecelakaan",generaelModel.uraianKecelakaan,isDisable: false),
+                  buildTextField("Uraian Bencana",generaelModel.uraianKecelakaan,isDisable: false),
                 ],
               ),
             ),

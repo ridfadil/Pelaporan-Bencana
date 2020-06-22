@@ -46,8 +46,15 @@ class _CreateAccidentReportState extends State<CreateAccidentReport> {
   List<File> listDokumen = new List<File>();
 
   var _jenisLaporanKecelakaan = [
-    "Kecelakaan Tunggal",
-    "Kecelakaan Bukan Tunggal",
+    "Gempa Bumi",
+    "Erupsi Gunung",
+    "Tsunami",
+    "Tanah Longsor",
+    "Banjir",
+    "Kekeringan",
+    "Puting Beliung",
+    "Abrasi",
+    "Kebakaran",
   ];
 
   @override
@@ -60,7 +67,7 @@ class _CreateAccidentReportState extends State<CreateAccidentReport> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Buat Laporan kecelakaan",style: TextStyle(color: Colors.white),),
+        title: Text("Buat Laporan Bencana",style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.redAccent,
       ),
       body: SingleChildScrollView(
@@ -131,23 +138,23 @@ class _CreateAccidentReportState extends State<CreateAccidentReport> {
               SizedBox(
                 height: 10,
               ),
-              buildDateField("Tanggal Kecelakaan"),
+              buildDateField("Tanggal Bencana"),
               SizedBox(
                 height: 10,
               ),
-              buildTimeField("Waktu Kecelakaan"),
+              buildTimeField("Waktu Bencana"),
               SizedBox(
                 height: 10,
               ),
-              buildDropDownPerubahanField("Jenis Kecelakaan"),
+              buildDropDownPerubahanField("Jenis Bencana"),
               SizedBox(
                 height: 10,
               ),
-              buildTextField("Lokasi/Alamat kecelakaan",lokasi),
+              buildTextField("Lokasi/Alamat Bencana",lokasi),
               SizedBox(
                 height: 10,
               ),
-              buildTextField("Uraian Kecelakaan",uraian),
+              buildTextField("Uraian Bencana",uraian),
 
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 20),
@@ -167,7 +174,7 @@ class _CreateAccidentReportState extends State<CreateAccidentReport> {
                         color: Colors.blueAccent,
                         size: 40,
                       ),
-                      tooltip: 'Attach File Kecelakaan',
+                      tooltip: 'Attach File Bencana',
                       onPressed: () {
                         listDokumen.length == 0? getAllFile() : CommonUtils.showToast("Lampiran foto sudah ada");
                       },
@@ -255,15 +262,15 @@ class _CreateAccidentReportState extends State<CreateAccidentReport> {
 
   _postLaporan(BuildContext context) async {
     if (date.text.isEmpty) {
-      CommonUtils.showToast("Tanggal kecelakaan Belum diisi");
+      CommonUtils.showToast("Tanggal Bencana Belum diisi");
     } else if (time.text.isEmpty) {
-      CommonUtils.showToast("Waktu kecelakaan Belum diisi");
+      CommonUtils.showToast("Waktu Bencana Belum diisi");
     } else if (jenis =="") {
-      CommonUtils.showToast("Jenis kecelakaan Belum diisi");
+      CommonUtils.showToast("Jenis Bencana Belum diisi");
     }else if (lokasi.text.isEmpty) {
-      CommonUtils.showToast("Lokasi kecelakaan Belum diisi");
+      CommonUtils.showToast("Lokasi Bencana Belum diisi");
     }else if (uraian.text.isEmpty) {
-      CommonUtils.showToast("Uraian kecelakaan Belum diisi");
+      CommonUtils.showToast("Uraian Bencana Belum diisi");
     }else if (listDokumen.length==0) {
       CommonUtils.showToast("Lampiran dokumen harus diisi");
     } else {
@@ -286,7 +293,7 @@ class _CreateAccidentReportState extends State<CreateAccidentReport> {
       });
       MyDialog.dismiss(context);
       Navigator.pop(context);
-      CommonUtils.showToast("Berhasil Melaporkan kecelakaan!");
+      CommonUtils.showToast("Berhasil Melaporkan Bencana!");
     }
   }
 
