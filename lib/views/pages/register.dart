@@ -18,6 +18,7 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   bool isValidate;
   TextEditingController nama = new TextEditingController();
+  TextEditingController nik = new TextEditingController();
   TextEditingController noTelp = new TextEditingController();
   TextEditingController alamat = new TextEditingController();
   TextEditingController email = new TextEditingController();
@@ -161,6 +162,35 @@ class _RegisterState extends State<Register> {
                       borderRadius: BorderRadius.all(Radius.circular(30)),
                       child: Icon(
                         Icons.person,
+                        color: MyColor.badgeColor,
+                      ),
+                    ),
+                    border: InputBorder.none,
+                    contentPadding:
+                    EdgeInsets.symmetric(horizontal: 25, vertical: 13)),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 32),
+            child: Material(
+              elevation: 2.0,
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+              child: TextField(
+                //onChanged: (String value){},
+                controller: nik,
+                keyboardType: TextInputType.number,
+                cursorColor: Colors.lightBlue,
+                decoration: InputDecoration(
+                    hintText: "NIK",
+                    prefixIcon: Material(
+                      elevation: 0,
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      child: Icon(
+                        Icons.credit_card,
                         color: MyColor.badgeColor,
                       ),
                     ),
@@ -375,7 +405,9 @@ class _RegisterState extends State<Register> {
     if (nama.text.isEmpty) {
       CommonUtils.showToast("Nama Belum diisi");
     } else if (noTelp.text.isEmpty) {
-      CommonUtils.showToast("No Telp Belum diisi");
+      CommonUtils.showToast("No Telp Belum diisi");}
+      else if (nik.text.isEmpty) {
+      CommonUtils.showToast("NIK Belum diisi");
     } else if (email.text.isEmpty || !email.text.contains("@")|| !email.text.contains(".")) {
       CommonUtils.showToast("Email Belum diisi / Format email tidak sesuai");
     } else if (alamat.text.isEmpty) {
@@ -420,6 +452,7 @@ class _RegisterState extends State<Register> {
         if(!isThere){
           await Firestore.instance.collection('user').document().setData({
             '${FirebaseKeys.FB_USER_NAMA}': '${nama.text.toString()}',
+            '${FirebaseKeys.FB_USER_NIK}': '${nik.text.toString()}',
             '${FirebaseKeys.FB_USER_ALAMAT}': '${alamat.text.toString()}',
             '${FirebaseKeys.FB_USER_EMAIL}': '${email.text.toString()}',
             '${FirebaseKeys.FB_USER_NO_TELP}': '${noTelp.text.toString()}',
@@ -432,7 +465,7 @@ class _RegisterState extends State<Register> {
         }else{
           isThere = false;
           CommonUtils.showToast("Email sudah terdaftar, silakan gunakan alamat email yang lain");
-          //MyDialog.dismiss(context);
+          MyDialog.dismiss(context);
         }
       } else {
         CommonUtils.showToast("Konfirmasi Password Tidak sesuai!");

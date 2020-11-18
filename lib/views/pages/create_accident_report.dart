@@ -30,6 +30,7 @@ class _CreateAccidentReportState extends State<CreateAccidentReport> {
   TextEditingController jenisKecelakaan = new TextEditingController();
 
   TextEditingController nama = new TextEditingController();
+  TextEditingController nik = new TextEditingController();
   TextEditingController alamat = new TextEditingController();
   TextEditingController email = new TextEditingController();
   TextEditingController telp = new TextEditingController();
@@ -101,6 +102,11 @@ class _CreateAccidentReportState extends State<CreateAccidentReport> {
                 height: 10,
               ),
               buildTextField("Nama Pelapor",nama,isDisable: false),
+              SizedBox(
+                height: 10,
+              ),
+
+              buildTextField("NIK Pelapor",nik,isDisable: false),
               SizedBox(
                 height: 10,
               ),
@@ -279,6 +285,7 @@ class _CreateAccidentReportState extends State<CreateAccidentReport> {
       String fileHex = Utility.base64String(bytes);
       await Firestore.instance.collection('report').document().setData({
         '${FirebaseKeys.FB_USER_NAMA}': '${nama.text.toString()}',
+        '${FirebaseKeys.FB_USER_NIK}': '${nik.text.toString()}',
         '${FirebaseKeys.FB_USER_ALAMAT}': '${alamat.text.toString()}',
         '${FirebaseKeys.FB_USER_EMAIL}': '${email.text.toString()}',
         '${FirebaseKeys.FB_USER_NO_TELP}': '${telp.text.toString()}',
@@ -306,6 +313,7 @@ class _CreateAccidentReportState extends State<CreateAccidentReport> {
         .then((DocumentSnapshot ds) {
       setState(() {
         nama.text = ds.data['nama'];
+        nik.text = ds.data['nik'];
         email.text = ds.data['email'];
         telp.text = ds.data['telp'];
         alamat.text = ds.data['alamat'];

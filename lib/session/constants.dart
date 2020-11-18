@@ -21,6 +21,7 @@ class SharedPrefKeys {
 
 class FirebaseKeys {
   static const String FB_USER_NAMA = "nama";
+  static const String FB_USER_NIK = "nik";
   static const String FB_USER_NO_TELP = "telp";
   static const String FB_USER_ALAMAT = "alamat";
   static const String FB_USER_EMAIL = "email";

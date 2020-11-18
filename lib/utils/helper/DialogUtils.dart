@@ -218,7 +218,7 @@ class BeautifulAlertDialog extends StatelessWidget {
           child: Row(
             children: <Widget>[
               SizedBox(width: 20.0),
-              CircleAvatar(radius: 55, backgroundColor: Colors.grey.shade200, child: Icon(FontAwesomeIcons.carCrash,color: Colors.redAccent,)),
+              CircleAvatar(radius: 55, backgroundColor: Colors.grey.shade200, child: Icon(Icons.warning,color: Colors.redAccent,)),
               SizedBox(width: 20.0),
               Expanded(
                 child: Column(
